@@ -182,8 +182,15 @@ public class Board {
         int n = this.n;
         int[][] tilesCopy = new int[n][n];
         System.arraycopy(this.tiles, 0, tilesCopy,0, n*n);
-        int v1 = StdRandom.uniformInt(n);
-        int v2 = StdRandom.uniformInt(n);
+        int v1 = 1;
+        int v2 = 1;
+        // I initialize v1 and v2 to the same value and run them through this loop so the v1 and v2 I get out
+        // must be different.
+        while (v1 == v2){
+            v1 = StdRandom.uniformInt(n);
+            v2 = StdRandom.uniformInt(n);
+        }
+
         swap(tilesCopy, v1 % n - 1, v1 / n - 1, v2 % n - 1, v2 / n - 1);
         return new Board(tilesCopy);
     }
