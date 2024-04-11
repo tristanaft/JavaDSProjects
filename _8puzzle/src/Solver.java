@@ -70,7 +70,9 @@ public class Solver {
 
         while(!mainMinPQ.isEmpty() || twinMinPQ.isEmpty()){
             SearchNode mainNode = mainMinPQ.delMin();
-            SearchNode twinNode = mainMinPQ.delMin();
+            SearchNode twinNode = twinMinPQ.delMin();
+            // StdOut.println(mainNode.board.toString());
+            // StdOut.println();
             if(mainNode.board.isGoal()){
                 this.isSolvable = true;
                 this.root = mainNode;
@@ -81,21 +83,21 @@ public class Solver {
             else {
                 for(Board neighbor : mainNode.board.neighbors()){
                     if(mainNode.previousNode == null) {
-                        mainMinPQ.insert(new SearchNode(neighbor, mainNode.moves, mainNode));
+                        mainMinPQ.insert(new SearchNode(neighbor, mainNode.moves + 1, mainNode));
                     }
                     else if(!neighbor.equals(mainNode.previousNode.board)){
                         // only add to PQ if board does not match the grandparent (weird terminology, but it makes sense in context)
-                        mainMinPQ.insert(new SearchNode(neighbor, mainNode.moves, mainNode));
+                        mainMinPQ.insert(new SearchNode(neighbor, mainNode.moves + 1, mainNode));
                     }
                 }
 
                 for(Board neighbor : twinNode.board.neighbors()){
                     if(twinNode.previousNode == null) {
-                        twinMinPQ.insert(new SearchNode(neighbor, twinNode.moves, twinNode));
+                        twinMinPQ.insert(new SearchNode(neighbor, twinNode.moves + 1, twinNode));
                     }
                     else if(!neighbor.equals(twinNode.previousNode.board)){
                         // only add to PQ if board does not match the grandparent (weird terminology, but it makes sense in context)
-                        twinMinPQ.insert(new SearchNode(neighbor, twinNode.moves, twinNode));
+                        twinMinPQ.insert(new SearchNode(neighbor, twinNode.moves + 1, twinNode));
                     }
                 }
             }
@@ -117,7 +119,7 @@ public class Solver {
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves(){
         if(isSolvable()){
-            return root.moves;
+            return this.root.moves;
         }
         else{
             return -1;

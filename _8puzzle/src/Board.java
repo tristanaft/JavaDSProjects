@@ -20,9 +20,9 @@ public class Board {
         int n = this.n;
         String out = n + "\n";
 
-        for(int i = 1; i < n + 1; i++) {
+        for (int i = 1; i < n + 1; i++) {
             for (int j = 1; j < n + 1; j++) {
-                out += this.tiles[i-1][j-1] + " ";
+                out += this.tiles[i - 1][j - 1] + " ";
 
             }
             out += "\n";
@@ -41,7 +41,7 @@ public class Board {
         // this just spits out x and y indices given a number between 0 and n^2 - 1
         int xidx = val % this.tiles[0].length;
         int yidx = (val - xidx) / this.tiles[0].length;
-        return new int[] {xidx, yidx};
+        return new int[]{xidx, yidx};
     }
 
     // number of tiles out of place
@@ -50,12 +50,12 @@ public class Board {
         // there is an awkward mismatch... index 0 is supposed to have 1 and index n^2 - 1 is supposed to have 0
         int count = 0;
         int n = this.n;
-        for(int i = 1; i < n + 1; ++i) {
-            for(int j = 1; j < n+1; j++){
-                int correctValue = j + n * (i-1);
+        for (int i = 1; i < n + 1; ++i) {
+            for (int j = 1; j < n + 1; j++) {
+                int correctValue = j + n * (i - 1);
                 // StdOut.print(correctValue + " ");
-                if(i == n && j == n) break; // handle 0 separately
-                if(this.tiles[i-1][j-1] != correctValue) {
+                if (i == n && j == n) break; // handle 0 separately
+                if (this.tiles[i - 1][j - 1] != correctValue) {
                     ++count;
                 }
             }
@@ -76,16 +76,16 @@ public class Board {
         // there is an awkward mismatch... index 0 is supposed to have 1 and index n^2 - 1 is supposed to have 0
 
         int n = this.n;
-        for(int i = 1; i < n + 1; ++i) {
-            for(int j = 1; j < n+1; j++){
-                int correctValue = j + n * (i-1);
+        for (int i = 1; i < n + 1; ++i) {
+            for (int j = 1; j < n + 1; j++) {
+                int correctValue = j + n * (i - 1);
                 int currValue;
-                if(this.tiles[i-1][j-1] != 0) {
-                    currValue = this.tiles[i-1][j-1];
+                if (this.tiles[i - 1][j - 1] != 0) {
+                    currValue = this.tiles[i - 1][j - 1];
                     // StdOut.print(currValue + " ");
                     //StdOut.print(currValue + " ");
-                    int dx = Math.abs(((correctValue-1) % n) - ((currValue-1) % n));
-                    int dy = Math.abs(((correctValue-1) / n) - ((currValue-1) / n)); // this should work with integer division
+                    int dx = Math.abs(((correctValue - 1) % n) - ((currValue - 1) % n));
+                    int dy = Math.abs(((correctValue - 1) / n) - ((currValue - 1) / n)); // this should work with integer division
                     dist += dx;
                     dist += dy;
                     // StdOut.print(dx + dy + " ");
@@ -106,16 +106,16 @@ public class Board {
     // does this board equal y?
     public boolean equals(Object y) {
         // equals has weird restrictions...
-        if(this == y) return true;
-        if(y == null) return false;
+        if (this == y) return true;
+        if (y == null) return false;
         Board that = (Board) y;
-        if(this.dimension() != that.dimension()) return false;
+        if (this.dimension() != that.dimension()) return false;
 
         return this.tiles == that.tiles; // is this right?
 
     }
 
-    private void swap(int[][] tiles, int i1, int j1, int i2, int j2){
+    private void swap(int[][] tiles, int i1, int j1, int i2, int j2) {
         // swap elements in tiles from i1xj1 with i2xj2
         int temp = tiles[i1][j1];
         tiles[i1][j1] = tiles[i2][j2];
@@ -128,11 +128,11 @@ public class Board {
         // first, find 0;
         int n = this.n;
         int targetX = 0, targetY = 0;
-        for(int i = 1; i < n + 1; ++i) {
-            for(int j = 1; j < n+1; ++j) {
-                if(this.tiles[i-1][j-1] == 0) {
-                    targetX = i;
-                    targetY = j;
+        for (int i = 1; i < n + 1; ++i) {
+            for (int j = 1; j < n + 1; ++j) {
+                if (this.tiles[i - 1][j - 1] == 0) {
+                    targetX = i - 1;
+                    targetY = j - 1;
                     break;
                 }
             }
@@ -140,63 +140,88 @@ public class Board {
 
         // ok, have up to 4 moves up down left right, but you can't go outside the nxn grid.
 
-        int[][] tilesCopy = new int[n][n];
-        System.arraycopy(this.tiles, 0, tilesCopy,0, this.n*this.n);
+
+        // StdOut.println(this.toString());
+        // StdOut.println(targetX);
+        // StdOut.println(targetY);
 
         //check up
-        if(targetY+1 < n) { // up is available
-            swap(tilesCopy, targetX, targetY, targetX, targetY+1);
+        if (targetY + 1 < n) { // up is available
+            int[][] tilesCopy = new int[n][n];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    tilesCopy[i][j] = this.tiles[i][j];
+                }
+            }
+            swap(tilesCopy, targetX, targetY, targetX, targetY + 1);
             boardStack.push(new Board(tilesCopy));
-            // ok now swap it back for potentially more
-            swap(tilesCopy, targetX, targetY, targetX, targetY+1);
         }
 
-        if(targetY-1 > 0) { // down is available
-            swap(tilesCopy, targetX, targetY, targetX, targetY-1);
+        if (targetY > 0) { // down is available
+            int[][] tilesCopy = new int[n][n];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    tilesCopy[i][j] = this.tiles[i][j];
+                }
+            }
+            swap(tilesCopy, targetX, targetY, targetX, targetY - 1);
             boardStack.push(new Board(tilesCopy));
-            // ok now swap it back for potentially more
-            swap(tilesCopy, targetX, targetY, targetX, targetY-1);
         }
 
-        if(targetX+1 < n) { // right is available
-            swap(tilesCopy, targetX+1, targetY, targetX, targetY);
+        if (targetX + 1 < n) { // right is available
+            int[][] tilesCopy = new int[n][n];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    tilesCopy[i][j] = this.tiles[i][j];
+                }
+            }
+            swap(tilesCopy, targetX + 1, targetY, targetX, targetY);
             boardStack.push(new Board(tilesCopy));
-            // ok now swap it back for potentially more
-            swap(tilesCopy, targetX+1, targetY, targetX, targetY);
         }
 
-        if(targetX-1 > 0) { // left is available
-            swap(tilesCopy, targetX-1, targetY, targetX, targetY);
+        if (targetX > 0) { // left is available
+            int[][] tilesCopy = new int[n][n];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    tilesCopy[i][j] = this.tiles[i][j];
+                }
+            }
+            swap(tilesCopy, targetX - 1, targetY, targetX, targetY);
             boardStack.push(new Board(tilesCopy));
-            // ok now swap it back for potentially more
-            swap(tilesCopy, targetX-1, targetY, targetX, targetY);
         }
 
         return boardStack;
-        
-        
+
+
     }
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() { // do I just swap two tiles at random? seems vague
         int n = this.n;
         int[][] tilesCopy = new int[n][n];
-        System.arraycopy(this.tiles, 0, tilesCopy,0, n*n);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                tilesCopy[i][j] = this.tiles[i][j];
+            }
+        }
         int v1 = 1;
         int v2 = 1;
         // I initialize v1 and v2 to the same value and run them through this loop so the v1 and v2 I get out
         // must be different.
-        while (v1 == v2){
+        while (v1 == v2) {
             v1 = StdRandom.uniformInt(n);
             v2 = StdRandom.uniformInt(n);
         }
 
-        swap(tilesCopy, v1 % n - 1, v1 / n - 1, v2 % n - 1, v2 / n - 1);
+        swap(tilesCopy, v1 % n, v1 / n, v2 % n, v2 / n);
         return new Board(tilesCopy);
     }
 
+
+
     // unit testing (not graded)
     public static void main(String[] args) {
+
         int[][] t1 = {{1,2,3},{4,5,6},{7,8,0}};
         int[][] t2 = {{0,1,3},{4,2,5},{7,8,6}};
         int[][] t3 = {{8,1,3},{4,0,2},{7,6,5}};
@@ -216,6 +241,19 @@ public class Board {
         StdOut.print(b3.toString());
         StdOut.println("Hamming Distance: " + b3.hamming());
         StdOut.println("Manhattan Distance: " + b3.manhattan());
+        // I think there is a problem with neighbors...
+        StdOut.println("This is the initial board:");
+        StdOut.println(b3.toString());
+        StdOut.println();
+        StdOut.println("These should be the neighbors:");
+        StdOut.println();
+        for(Board b : b3.neighbors()){
+            StdOut.println(b.toString());
+            StdOut.println();
+        }
+
+
+
 
 
 
