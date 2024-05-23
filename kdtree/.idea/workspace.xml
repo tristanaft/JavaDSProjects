@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1e4f978-b3bd-4ae1-84e9-9e1170bce808" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/KdTree.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PointSET.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,10 +135,10 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.KdTreeGenerator" />
+      <item itemvalue="Application.KdTree" />
       <item itemvalue="Application.NearestNeighborVisualizer" />
       <item itemvalue="Application.input10.txt" />
-      <item itemvalue="Application.KdTree" />
-      <item itemvalue="Application.KdTreeGenerator" />
     </list>
     <recent_temporary>
       <list>
